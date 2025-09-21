@@ -139,7 +139,7 @@ def detect_objects_yolo(frame, model, img_size=640):
         x1, y1, x2, y2, conf, class_id = detection[:6]
         x1, y1, x2, y2 = int(x1), int(y1), int(x2), int(y2)
         class_id = int(class_id)
-        class_name = model.names[1]
+        class_name = model.names[class_id]
         detections.append((x1, y1, x2, y2, float(conf), class_id, class_name))
     
     return detections
@@ -366,7 +366,7 @@ def process_alignment_sequence(alignment_sequence, fps):
     # Check if class is drone (0) or plane (1)
     if class_id == 0:
         # Run speed and location analysis
-        speed_data = yolo_drone_3d(start_detection, end_detection, fps)
+        #speed_data = yolo_drone_3d(start_detection, end_detection, fps)
         sequence_data = {
             'class_id': class_id,
             'class_name': class_name,
@@ -374,7 +374,7 @@ def process_alignment_sequence(alignment_sequence, fps):
             'end_detection': end_detection,
             'sequence_length': len(alignment_sequence),
             'duration': end_detection['timestamp'] - start_detection['timestamp'],
-            'speed_data': speed_data,
+            'speed_data': 1,
             'all_detections': alignment_sequence
         }
         # Call the arbitrary feed_store function (to be implemented)
@@ -382,7 +382,7 @@ def process_alignment_sequence(alignment_sequence, fps):
         return sequence_data
         
     if class_id == 1:
-        speed_data = yolo_plane_3d(start_detection, end_detection, fps)
+        #speed_data = yolo_plane_3d(start_detection, end_detection, fps)
         sequence_data = {
             'class_id': class_id,
             'class_name': class_name,
@@ -390,7 +390,7 @@ def process_alignment_sequence(alignment_sequence, fps):
             'end_detection': end_detection,
             'sequence_length': len(alignment_sequence),
             'duration': end_detection['timestamp'] - start_detection['timestamp'],
-            'speed_data': speed_data,
+            'speed_data': 1,
             'all_detections': alignment_sequence
         }
         # Call the arbitrary feed_store function (to be implemented)
